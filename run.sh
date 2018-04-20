@@ -20,7 +20,7 @@ sudo apt-get -y dist-upgrade
 sleep 2
 sudo apt-get update -y
 sleep 2
-sudo apt-get install htop -y 
+sudo apt-get install htop -y
 sleep 3
 sudo apt-get install nano -y
 sleep 3
@@ -111,9 +111,9 @@ case "$CHOICE" in
     sudo ufw allow from `ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/' | awk -F"." '{print $1"."$2"."$3".0/24"}'` to any port 22
     yes | sudo ufw enable
     sleep 2
-    sudo wget https://github.com/padraiq/Bulwark/releases/download/bulwark-1.2.4.0-20180414182127-225d5c7/bulwark-1.2.4.0-arm-linux-gnueabihf.tar.gz
+    sudo wget https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bulwark-1.2.4.0-ARMx64.tar.gz
     sleep 2
-    sudo tar -xzf bulwark-1.2.4.0-arm-linux-gnueabihf.tar.gz
+    sudo tar -xzf bulwark-1.2.4.0-ARMx64.tar.gz
     sudo mv bin bulwark
     cd bulwark
     sudo cp bulwark* /usr/bin
@@ -217,9 +217,9 @@ case "$CHOICE" in
     sudo ufw allow 22
     yes | sudo ufw enable
     sleep 2
-    sudo wget https://github.com/padraiq/Bulwark/releases/download/bulwark-1.2.4.0-20180414182127-225d5c7/bulwark-1.2.4.0-x86_64-unknown-linux-gnu.tar.gz
+    sudo wget https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bulwark-1.2.4.0-linux64.tar.gz
     sleep 2
-    sudo tar -xzf bulwark-1.2.4.0-x86_64-unknown-linux-gnu.tar.gz
+    sudo tar -xzf bulwark-1.2.4.0-linux64.tar.gz
     sudo mv bin bulwark
     cd bulwark
     sudo cp bulwark* /usr/bin
@@ -309,9 +309,9 @@ case "$CHOICE" in
     sudo ufw allow 22
     yes | sudo ufw enable
     sleep 2
-    sudo wget https://github.com/padraiq/Bulwark/releases/download/bulwark-1.2.4.0-20180414182127-225d5c7/bulwark-1.2.4.0-x86_64-unknown-linux-gnu.tar.gz
+    sudo wget https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bulwark-1.2.4.0-linux64.tar.gz
     sleep 2
-    sudo tar -xzf bulwark-1.2.4.0-x86_64-unknown-linux-gnu.tar.gz
+    sudo tar -xzf bulwark-1.2.4.0-linux64.tar.gz
     sudo mv bin bulwark
     cd bulwark
     sudo cp bulwark* /usr/bin
