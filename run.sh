@@ -139,7 +139,7 @@ case "$CHOICE" in
     sudo sh -c 'echo "HiddenServicePort 52543 127.0.0.1:52543" >> /etc/tor/torrc'
     sudo sh -c 'echo "HiddenServicePort 80 127.0.0.1:80" >> /etc/tor/torrc'
     sudo sh -c 'echo "LongLivedPorts 80,52543" >> /etc/tor/torrc'
-    sudo sh -c 'echo "### ROR CONF END###>> /home/bulwark/.bulwark/bulwark.conf'
+    sudo sh -c 'echo "### TOR CONF END###>> /home/bulwark/.bulwark/bulwark.conf'
     sleep 3
     sudo /etc/init.d/tor stop
     sleep 1
