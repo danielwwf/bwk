@@ -158,7 +158,7 @@ case "$CHOICE" in
     sudo systemctl start bulwarkd.service
     sudo echo "Starting up bulwarkd, please allow up to 60 seconds"
     sleep 60
-    sudo su -c "echo masternodeprivkey=`bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf masternode genkey` >> /home/bulwark/.bulwark/bulwark.conf"
+    sudo su -c 'echo masternodeprivkey=`bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf masternode genkey` >> /home/bulwark/.bulwark/bulwark.conf"
     sudo sh -c 'echo "masternode=1 >> /home/bulwark/.bulwark/bulwark.conf'
     sudo echo "externalip=`sudo cat /var/lib/tor/hidden_service/hostname`" >> /home/bulwark/.bulwark/bulwark.conf
     sudo echo ""
