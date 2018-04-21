@@ -75,7 +75,7 @@ sudo su -c "echo 'PATH=/usr/local/go/bin:$PATH' >> /etc/profile"
 sleep 1
 # put into user's ~/.profile
 export GOPATH=$HOME/go
-sudo sh -c "echo 'GOPATH=$HOME/go' /home/pi/.profile"
+sudo sh -c "echo 'GOPATH=$HOME/go' >> /home/pi/.profile"
 source /etc/profile
 source ~/.profile
 sleep 1
