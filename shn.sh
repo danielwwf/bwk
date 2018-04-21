@@ -71,9 +71,11 @@ sudo rm go1.9.linux-armv6l.tar.gz
 sleep 1
 # put into global /etc/profile
 export PATH=$PATH:/usr/local/go/bin
+sudo su -c "echo 'PATH=/usr/local/go/bin:$PATH' >> /etc/profile"
 sleep 1
 # put into user's ~/.profile
 export GOPATH=$HOME/go
+sudo sh -c "echo 'GOPATH=$HOME/go' /home/pi/.profile"
 source /etc/profile
 source ~/.profile
 sleep 1
