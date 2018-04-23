@@ -1,8 +1,10 @@
 # SHN Installer
 
 Log in to your Raspberry Pi via SSH, then run this line:
+
 ```
-bash <( wget -qO - https://raw.githubusercontent.com/kewagi/bwk/master/prepare.sh )```
+bash <( wget -qO - https://raw.githubusercontent.com/kewagi/bwk/master/prepare.sh )
+```
 
 The installer will prepare some things, then open the Raspberry configuration tool _raspi-config_ - change the following settings:
 
