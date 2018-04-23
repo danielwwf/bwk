@@ -24,10 +24,10 @@ cat << EOL
 
 We will now start raspi-config. Please change the following settings:
 
-* Change your password          1 Change User Password
-* Optional: Set up your WiFi    2 Network Options  -> N2 WiFi
-* Expand your filesystem        7 Advanced Options -> A1 Expand Filesystem
-* Set GPU Memory to 16          7 Advanced Options -> A3 Memory Split
+* Change your password              1 Change User Password
+* Optional: Set up your WiFi        2 Network Options  -> N2 WiFi
+* Expand your filesystem            7 Advanced Options -> A1 Expand Filesystem
+* Optional: Set GPU Memory to 16MB  7 Advanced Options -> A3 Memory Split
 
 Then select "Finish"
 
