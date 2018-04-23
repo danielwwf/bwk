@@ -1,5 +1,12 @@
 #!/bin/bash
 
+CHARS="/-\|"
+TARBALLURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bulwark-1.2.4.0-ARMx64.tar.gz"
+TARBALLNAME="bulwark-1.2.4.0-ARMx64.tar.gz"
+BOOTSTRAPURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bootstrap.dat.zip"
+BOOTSTRAPARCHIVE="bootstrap.dat.zip"
+BWKVERSION="1.2.4.0"
+
 if [ "$(id -u)" != "0" ]; then
     echo "Sorry, this script needs to be run as root. Do \"sudo bash run.sh\""
     exit 1
@@ -34,6 +41,8 @@ sleep 3
 sudo apt-get install git -y
 sleep 3
 sudo apt install golang -y
+sleep 3
+sudo apt install unzip -y
 sleep 3
 sudo wget --directory-prefix=/etc/fail2ban/ https://raw.githubusercontent.com/whywefight/Bulwark-MN-Install/master/jail.local
 sudo apt install unattended-upgrades -y
@@ -75,11 +84,14 @@ sudo su -c "echo 'PATH=/usr/local/go/bin:$PATH' >> /etc/profile"
 sleep 1
 # put into user's ~/.profile
 export GOPATH=$HOME/go
+echo "" >> /home/pi/.profile
+echo "# Bulwark settings" >> /home/pi/.profile
 sudo sh -c "echo 'GOPATH=$HOME/go' >> /home/pi/.profile"
 source /etc/profile
 source ~/.profile
 sleep 1
 sudo mkdir /home/bulwark/.bulwark
+wget $BOOTSTRAPURL && unzip $BOOTSTRAPARCHIVE -d /home/bulwark/.bulwark/ && rm $BOOTSTRAPARCHIVE
 sudo touch /home/bulwark/.bulwark/bulwark.conf
 sudo chown -R bulwark:bulwark /home/bulwark/.bulwark
 RPCUSER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
@@ -98,10 +110,11 @@ sleep 2
 sudo ufw allow from `ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/' | awk -F"." '{print $1"."$2"."$3".0/24"}'` to any port 22
 yes | sudo ufw enable
 sleep 2
-sudo wget https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bulwark-1.2.4.0-ARMx64.tar.gz
+sudo wget $TARBALLURL
 sleep 2
-sudo tar -xzf bulwark-1.2.4.0-ARMx64.tar.gz
+sudo tar -xzf $TARBALLNAME
 sudo mv bin bulwark
+sudo rm $TARBALLNAME
 cd bulwark
 sudo cp bulwark* /usr/local/bin
 sudo sh -c 'echo "### TOR CONFIG ###" >> /home/bulwark/.bulwark/bulwark.conf'
@@ -126,7 +139,7 @@ sudo sh -c 'echo "HiddenServiceDir /var/lib/tor/hidden_service/" >> /etc/tor/tor
 sudo sh -c 'echo "HiddenServicePort 52543 127.0.0.1:52543" >> /etc/tor/torrc'
 sudo sh -c 'echo "HiddenServicePort 80 127.0.0.1:80" >> /etc/tor/torrc'
 sudo sh -c 'echo "LongLivedPorts 80,52543" >> /etc/tor/torrc'
-sudo sh -c 'echo "### TOR CONF END###>> /home/bulwark/.bulwark/bulwark.conf'
+sudo sh -c 'echo "### TOR CONF END###" >> /home/bulwark/.bulwark/bulwark.conf'
 sleep 3
 sudo /etc/init.d/tor stop
 sleep 1
@@ -143,15 +156,21 @@ sleep 1
 sudo systemctl enable bulwarkd.service
 sleep 1
 sudo systemctl start bulwarkd.service
-sudo echo "Starting up bulwarkd, please allow up to 60 seconds"
-sleep 60
-sudo su -c 'echo "masternodeprivkey=`bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf masternode genkey`" >> /home/bulwark/.bulwark/bulwark.conf'
+sudo echo "Starting up bulwarkd, please wait"
+
+# Wait for bulwark to finish starting to prevent errors in line 158
+until sudo su -c "bulwark-cli getinfo 2>/dev/null | grep 'balance' > /dev/null" bulwark; do
+  for (( i=0; i<${#CHARS}; i++ )); do
+    sleep 2
+    echo -en "${CHARS:$i:1}" "\r"
+  done
+done
+
+sudo su -c 'echo "masternodeprivkey=`sudo su -c "bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf masternode genkey" bulwark`" >> /home/bulwark/.bulwark/bulwark.conf'
 sudo su -c 'echo "masternode=1" >> /home/bulwark/.bulwark/bulwark.conf'
 sudo echo "externalip=`sudo cat /var/lib/tor/hidden_service/hostname`" >> /home/bulwark/.bulwark/bulwark.conf
 sudo echo ""
-sudo echo "if everything went well i should be syncing. We will check that..."
-sudo echo ""
-sudo echo "I will open the getinfo screen for you in watch mode, close it with CTRL + C once we are up to date, i will continue after that"
+sudo echo "I will open the getinfo screen for you in watch mode now, close it with CTRL + C once we are fully synced."
 sleep 20
 watch bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf getinfo
 sudo echo "Daemon Status:"
@@ -179,7 +198,7 @@ sudo echo "Wifi Password hashed:"
 sudo cat /etc/wpa_supplicant/wpa_supplicant.conf | grep 'psk='
 sudo echo ""
 sudo echo "Local Wallet masternode.conf file:"
-sudo echo $(sudo echo "TORNODE") $(sudo cat /var/lib/tor/hidden_service/hostname):52543 $(sudo grep -Po '(?<=masternodeprivkey=).*' /home/bulwark/.bulwark/bulwark.conf) $(echo "YOURTXINHERE")
+sudo echo TORNODE $(sudo cat /var/lib/tor/hidden_service/hostname):52543 $(sudo grep -Po '(?<=masternodeprivkey=).*' /home/bulwark/.bulwark/bulwark.conf) $(echo "YOURTXINHERE")
 sudo echo ""
 sudo echo "Important Other Infos:"
 sudo echo ""
@@ -189,7 +208,13 @@ sudo echo "Start daemon: sudo systemctl start bulwarkd.service"
 sudo echo "Restart daemon: sudo systemctl restart bulwarkd.service"
 sudo echo "Status of daemon: sudo systemctl status bulwarkd.service"
 sudo echo "Stop daemon: sudo systemctl stop bulwarkd.service"
+sudo echo "Check bulwarkd status: bulwark-cli getinfo"
+sudo echo "Check masternode status: bulwark-cli masternode status"
 sleep 5
-sudo echo "Installation finished. Rebooting System!"
-read -p "Press any key to continue, system will reboot."
+sudo echo ""
+sudo echo "Adding bulwark-cli shortcut to ~/.profile"
+echo "alias bulwark-cli='sudo bulwark-cli -config=/home/bulwark/.bulwark/bulwark.conf -datadir=/home/bulwark/.bulwark'" >> /home/pi/.profile
+sudo echo "Installation finished."
+read -p "Press Enter to continue, the system will reboot."
+sudo rm -rf shn.sh
 sudo reboot
