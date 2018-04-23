@@ -171,9 +171,6 @@ sudo systemctl status fail2ban.service | sed -n -e 's/^.*Active: //p'
 sudo echo ""
 sudo echo "Unattended Updates:"
 cat /etc/apt/apt.conf.d/20auto-upgrades
-sudo echo ""
-sudo echo "Local Wallet masternode.conf file:"
-sudo echo $(sudo echo "TORNODE") $(sudo cat /var/lib/tor/hidden_service/hostname):52543 $(sudo grep -Po '(?<=masternodeprivkey=).*' /home/bulwark/.bulwark/bulwark.conf) $(echo "YOURTXINHERE")
 sleep 5
 sudo echo "Installation finished. Rebooting System!"
 read -p "Press any key to continue, system will reboot."
