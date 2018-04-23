@@ -84,7 +84,7 @@ sudo su -c "echo 'PATH=/usr/local/go/bin:$PATH' >> /etc/profile"
 sleep 1
 # put into user's ~/.profile
 export GOPATH=$HOME/go
-echo " " >> /home/pi/.profile
+echo "" >> /home/pi/.profile
 echo "# Bulwark settings" >> /home/pi/.profile
 sudo sh -c "echo 'GOPATH=$HOME/go' >> /home/pi/.profile"
 source /etc/profile
@@ -114,6 +114,7 @@ sudo wget $TARBALLURL
 sleep 2
 sudo tar -xzf $TARBALLNAME
 sudo mv bin bulwark
+sudo rm $TARBALLNAME
 cd bulwark
 sudo cp bulwark* /usr/local/bin
 sudo sh -c 'echo "### TOR CONFIG ###" >> /home/bulwark/.bulwark/bulwark.conf'
@@ -169,9 +170,7 @@ sudo su -c 'echo "masternodeprivkey=`sudo su -c "bulwark-cli -datadir=/home/bulw
 sudo su -c 'echo "masternode=1" >> /home/bulwark/.bulwark/bulwark.conf'
 sudo echo "externalip=`sudo cat /var/lib/tor/hidden_service/hostname`" >> /home/bulwark/.bulwark/bulwark.conf
 sudo echo ""
-sudo echo "if everything went well i should be syncing. We will check that..."
-sudo echo ""
-sudo echo "I will open the getinfo screen for you in watch mode, close it with CTRL + C once we are up to date, i will continue after that"
+sudo echo "I will open the getinfo screen for you in watch mode now, close it with CTRL + C once we are fully synced."
 sleep 20
 watch bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf getinfo
 sudo echo "Daemon Status:"
@@ -209,9 +208,13 @@ sudo echo "Start daemon: sudo systemctl start bulwarkd.service"
 sudo echo "Restart daemon: sudo systemctl restart bulwarkd.service"
 sudo echo "Status of daemon: sudo systemctl status bulwarkd.service"
 sudo echo "Stop daemon: sudo systemctl stop bulwarkd.service"
+sudo echo "Check bulwarkd status: bulwark-cli getinfo"
+sudo echo "Check masternode status: bulwark-cli masternode status"
 sleep 5
+sudo echo ""
 sudo echo "Adding bulwark-cli shortcut to ~/.profile"
 echo "alias bulwark-cli='sudo bulwark-cli -config=/home/bulwark/.bulwark/bulwark.conf -datadir=/home/bulwark/.bulwark'" >> /home/pi/.profile
-sudo echo "Installation finished. Rebooting System!"
-read -p "Press any key to continue, system will reboot."
+sudo echo "Installation finished."
+read -p "Press Enter to continue, the system will reboot."
+sudo rm -rf shn.sh
 sudo reboot
