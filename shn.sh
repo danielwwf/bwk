@@ -1,6 +1,11 @@
 #!/bin/bash
 
 CHARS="/-\|"
+TARBALLURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bulwark-1.2.4.0-ARMx64.tar.gz"
+TARBALLNAME="bulwark-1.2.4.0-ARMx64.tar.gz"
+BOOTSTRAPURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bootstrap.dat.zip"
+BOOTSTRAPARCHIVE="bootstrap.dat.zip"
+BWKVERSION="1.2.4.0"
 
 if [ "$(id -u)" != "0" ]; then
     echo "Sorry, this script needs to be run as root. Do \"sudo bash run.sh\""
@@ -36,6 +41,8 @@ sleep 3
 sudo apt-get install git -y
 sleep 3
 sudo apt install golang -y
+sleep 3
+sudo apt install unzip -y
 sleep 3
 sudo wget --directory-prefix=/etc/fail2ban/ https://raw.githubusercontent.com/whywefight/Bulwark-MN-Install/master/jail.local
 sudo apt install unattended-upgrades -y
@@ -84,6 +91,7 @@ source /etc/profile
 source ~/.profile
 sleep 1
 sudo mkdir /home/bulwark/.bulwark
+wget $BOOTSTRAPURL && unzip $BOOTSTRAPARCHIVE -d /home/bulwark/.bulwark/ && rm $BOOTSTRAPARCHIVE
 sudo touch /home/bulwark/.bulwark/bulwark.conf
 sudo chown -R bulwark:bulwark /home/bulwark/.bulwark
 RPCUSER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
@@ -102,9 +110,9 @@ sleep 2
 sudo ufw allow from `ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/' | awk -F"." '{print $1"."$2"."$3".0/24"}'` to any port 22
 yes | sudo ufw enable
 sleep 2
-sudo wget https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bulwark-1.2.4.0-ARMx64.tar.gz
+sudo wget $TARBALLURL
 sleep 2
-sudo tar -xzf bulwark-1.2.4.0-ARMx64.tar.gz
+sudo tar -xzf $TARBALLNAME
 sudo mv bin bulwark
 cd bulwark
 sudo cp bulwark* /usr/local/bin
