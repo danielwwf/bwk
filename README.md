@@ -48,7 +48,7 @@ network={
     }
 ```
 
-Replace _YOURCOUNTRYCODE_ with the [two letter ISO code](https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes) of your country, _YOURNETWORKSSID_ with the name of your wireless network and _YOURNETWORKPASSWORD_ with the password of your wireless network (the password will be encrypted during the installation). Proceed to [Finding your SHN on your network](#finding-your-shn-on-your-network)
+Replace _YOURCOUNTRYCODE_ with the [two letter ISO code](https://en.wikipedia.org/wiki/ISO_3166-1#Current_codes) of your country, _YOURNETWORKSSID_ with the name of your wireless network and _YOURNETWORKPASSWORD_ with the password of your wireless network (the password will be encrypted during the installation). Eject the SD card, put it back into your Raspberry Pi and connect the power cable, then proceed to [Finding your SHN on your network](#finding-your-shn-on-your-network)
 
 ## Finding your SHN on your network
 Next, you need to find the IP address your SHN has been assigned by your router. How you do this depends on your operating system.
