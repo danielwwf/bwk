@@ -79,7 +79,8 @@ Once you are logged in, run this line:
 bash <( wget -qO - https://raw.githubusercontent.com/kewagi/bwk/master/prepare.sh )
 ```
 
-The installer will prepare some things, then open the Raspberry configuration tool _raspi-config_ - change the following settings:
+The installer will prepare some things, then open the Raspberry configuration tool _raspi-config_.  
+Change the following settings:
 
 ```
 * Change your password              1 Change User Password
@@ -87,7 +88,8 @@ The installer will prepare some things, then open the Raspberry configuration to
 * Optional: Set GPU Memory to 16MB  7 Advanced Options -> A3 Memory Split
 ```
 
-Select "Finish" and press Enter, your Raspberry will reboot. Wait for a minute, log into your Raspberry again, then run this command:
+Select "Finish" and press Enter, your Raspberry will reboot.  
+Wait for a minute, log into your Raspberry again, then run this command:
 
 ```
 sudo bash shn.sh
