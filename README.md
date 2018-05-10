@@ -66,7 +66,8 @@ You should see a single line containing the IP address of your home node.
 ### Linux
 Open a shell and run the following command:
 ```
-arp -na | grep -i b8:27:eb | head -1 | awk -F ' ' '{print $2}'```
+arp -na | grep -i b8:27:eb | head -1 | awk -F ' ' '{print $2}'
+```
 You should see a single line containing the IP address of your home node.
 
 ## Installation
