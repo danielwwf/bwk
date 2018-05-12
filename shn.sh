@@ -77,18 +77,20 @@ sleep 1
 sudo wget https://storage.googleapis.com/golang/go1.9.linux-armv6l.tar.gz
 sudo tar -C /usr/local -xzf go1.9.linux-armv6l.tar.gz
 sudo rm go1.9.linux-armv6l.tar.gz
+sudo mkdir -p /home/bulwark/go/bin
+sudo chown -R bulwark:bulwark /home/bulwark/go
 sleep 1
 # put into global /etc/profile
 export PATH=$PATH:/usr/local/go/bin
 sudo su -c "echo 'PATH=/usr/local/go/bin:$PATH' >> /etc/profile"
+source /etc/profile
 sleep 1
 # put into user's ~/.profile
-export GOPATH=$HOME/go
-echo "" >> /home/pi/.profile
-echo "# Bulwark settings" >> /home/pi/.profile
-sudo sh -c "echo 'GOPATH=$HOME/go' >> /home/pi/.profile"
-source /etc/profile
-source ~/.profile
+export GOPATH=/home/bulwark/go
+export PATH=$PATH:$GOPATH/bin
+echo "" >> /home/bulwark/.profile
+echo "# Bulwark settings" >> /home/bulwark/.profile
+sudo sh -c "echo 'GOPATH=/home/bulwark/go' >> /home/bulwark/.profile"
 sleep 1
 sudo mkdir /home/bulwark/.bulwark
 wget $BOOTSTRAPURL && unzip $BOOTSTRAPARCHIVE -d /home/bulwark/.bulwark/ && rm $BOOTSTRAPARCHIVE
