@@ -186,7 +186,7 @@ DASH_DB=/home/bulwark/dash/bwk-dash.db
 EOL
 sleep 1
 # Cleanup/enforce ownership.
-sudo chown -R bulwark:bulwark /home/bulwark/dash
+sudo chown -R bulwark:bulwark /home/bulwark/
 # Setup cron job for bwk-cron.
 sudo crontab -u bulwark -l > mycron
 echo '* * * * * cd /home/bulwark/dash && /usr/local/bin/bwk-cron' >> mycron
@@ -260,8 +260,6 @@ echo "Status of daemon: sudo systemctl status bulwarkd.service"
 echo "Stop daemon: sudo systemctl stop bulwarkd.service"
 echo "Check bulwarkd status: bulwark-cli getinfo"
 echo "Check masternode status: bulwark-cli masternode status"
-echo ""
-echo "BWK-DASH address: http://" `echo $SSH_CONNECTION | awk '{print $3}'`":8080"
 sleep 5
 echo ""
 echo "Adding bulwark-cli shortcut to ~/.profile"
