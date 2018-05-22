@@ -6,6 +6,11 @@ TARBALLNAME="bulwark-1.2.4.0-ARMx64.tar.gz"
 BOOTSTRAPURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bootstrap.dat.zip"
 BOOTSTRAPARCHIVE="bootstrap.dat.zip"
 BWKVERSION="1.2.4.0"
+# BWK-Dash variables.
+DASH_BIN_TAR="bwk-dash-1.0.0-linux-arm.tar.gz"
+DASH_HTML_TAR="bwk-dash-1.0.0-html.tar.gz"
+DASH_PORT="8080"
+DASH_VER="v1.0.0-rc1"
 
 if [ "$(id -u)" != "0" ]; then
     echo "Sorry, this script needs to be run as root. Do \"sudo bash run.sh\""
@@ -154,29 +159,19 @@ RestartSec=35
 WantedBy=multi-user.target
 EOL
 sleep 1
-# Install golang.
-sudo wget https://dl.google.com/go/go1.10.2.linux-armv6l.tar.gz
-sudo tar -C /usr/local -xzf go1.10.2.linux-armv6l.tar.gz
-sudo rm go1.10.2.linux-armv6l.tar.gz
-# Configure golang.
-sudo echo "PATH=/usr/local/go/bin:$PATH" >> /etc/profile
-source /etc/profile
-sudo su -c "mkdir -p /home/bulwark/go/src" bulwark
-echo "GOPATH=/home/bulwark/go" >> /home/bulwark/.profile
-source /home/bulwark/.profile
-# Build the dashboard binaries.
-sudo su -c "GOPATH=/home/bulwark/go go get github.com/dustinengle/bwk-dash" bulwark
-sudo su -c "GOPATH=/home/bulwark/go go build -o bwk-cron /home/bulwark/go/src/github.com/dustinengle/bwk-dash/cmd/bwk-cron/*.go" bulwark
-sudo su -c "GOPATH=/home/bulwark/go go build -o bwk-dash /home/bulwark/go/src/github.com/dustinengle/bwk-dash/cmd/bwk-dash/*.go" bulwark
-sudo mv bwk-cron /usr/local/bin/bwk-cron
-sudo mv bwk-dash /usr/local/bin/bwk-dash
+# Get binaries and install.
+wget https://github.com/dustinengle/bwk-dash/releases/download/$DASH_VER/$DASH_BIN_TAR
+sudo tar -zxf $DASH_BIN_TAR -C /usr/local/bin
+rm -f $DASH_BIN_TAR
 # Copy the html files to the dash folder and create.
-mkdir -p /home/bulwark/dash
-cp -R $GOPATH/src/github.com/dustinengle/bwk-dash/client/build/* /home/bulwark/dash/
+wget https://github.com/dustinengle/bwk-dash/releases/download/$DASH_VER/$DASH_HTML_TAR
+sudo mkdir -p /home/bulwark/dash
+sudo tar -zxf $DASH_HTML_TAR -C /home/bulwark/dash
+rm -f $DASH_HTML_TAR
 # Create .env file for dashboard api and cron.
 cat > /home/bulwark/dash/.env << EOL
 DASH_DONATION_ADDRESS=TESTADDRESSHERE
-DASH_PORT=8080
+DASH_PORT=${DASH_PORT}
 DASH_RPC_ADDR=localhost
 DASH_RPC_PORT=52541
 DASH_RPC_USER=${RPCUSER}
@@ -186,7 +181,7 @@ DASH_DB=/home/bulwark/dash/bwk-dash.db
 EOL
 sleep 1
 # Cleanup/enforce ownership.
-sudo chown -R bulwark:bulwark /home/bulwark/
+sudo chown -R bulwark:bulwark /home/bulwark/dash
 # Setup cron job for bwk-cron.
 sudo crontab -u bulwark -l > mycron
 echo '* * * * * cd /home/bulwark/dash && /usr/local/bin/bwk-cron' >> mycron
