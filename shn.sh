@@ -155,19 +155,19 @@ WantedBy=multi-user.target
 EOL
 sleep 1
 # Install golang.
-sudo wget https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.10.2.linux-amd64.tar.gz
-sudo rm go1.10.2.linux-amd64.tar.gz
+sudo wget https://dl.google.com/go/go1.10.2.linux-armv6l.tar.gz
+sudo tar -C /usr/local -xzf go1.10.2.linux-armv6l.tar.gz
+sudo rm go1.10.2.linux-armv6l.tar.gz
 # Configure golang.
 sudo echo "PATH=/usr/local/go/bin:$PATH" >> /etc/profile
 source /etc/profile
-mkdir -p /home/bulwark/go/src
-echo "GOPATH=$HOME/go" >> /home/bulwark/.profile
+sudo su -c "mkdir -p /home/bulwark/go/src" bulwark
+echo "GOPATH=/home/bulwark/go" >> /home/bulwark/.profile
 source /home/bulwark/.profile
 # Build the dashboard binaries.
-go get github.com/dustinengle/bwk-dash
-go build -o bwk-cron $GOPATH/src/github.com/dustinengle/bwk-dash/cmd/bwk-cron/*.go
-go build -o bwk-dash $GOPATH/src/github.com/dustinengle/bwk-dash/cmd/bwk-dash/*.go
+sudo su -c "GOPATH=/home/bulwark/go go get github.com/dustinengle/bwk-dash" bulwark
+sudo su -c "GOPATH=/home/bulwark/go go build -o bwk-cron /home/bulwark/go/src/github.com/dustinengle/bwk-dash/cmd/bwk-cron/*.go" bulwark
+sudo su -c "GOPATH=/home/bulwark/go go build -o bwk-dash /home/bulwark/go/src/github.com/dustinengle/bwk-dash/cmd/bwk-dash/*.go" bulwark
 sudo mv bwk-cron /usr/local/bin/bwk-cron
 sudo mv bwk-dash /usr/local/bin/bwk-dash
 # Copy the html files to the dash folder and create.
