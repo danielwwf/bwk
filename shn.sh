@@ -202,7 +202,7 @@ sudo cat > /etc/systemd/system/bwk-cron.timer << EOL
 Description=Bulwark Home Node Dashboard - Cron
 [Timer]
 OnBootSec=35
-OnUnitActiveSec=60 
+OnUnitActiveSec=60
 [Install]
 WantedBy=timers.target
 EOL
@@ -275,6 +275,8 @@ echo "Status of daemon: sudo systemctl status bulwarkd.service"
 echo "Stop daemon: sudo systemctl stop bulwarkd.service"
 echo "Check bulwarkd status: bulwark-cli getinfo"
 echo "Check masternode status: bulwark-cli masternode status"
+echo ""
+echo "BWK-Dash address: http://`ifconfig | grep "inet " | grep -v -m1 "127.0.0.1" | awk '{print $2}'`:8080"
 sleep 5
 echo ""
 echo "Adding bulwark-cli shortcut to ~/.profile"
