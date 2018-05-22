@@ -79,16 +79,7 @@ Once you are logged in, run this line:
 bash <( wget -qO - https://raw.githubusercontent.com/kewagi/bwk/master/prepare.sh )
 ```
 
-The installer will prepare some things, then open the Raspberry configuration tool _raspi-config_.  
-Change the following settings:
-
-```
-* Change your password              1 Change User Password
-* Expand your filesystem            7 Advanced Options -> A1 Expand Filesystem
-* Optional: Set GPU Memory to 16MB  7 Advanced Options -> A3 Memory Split
-```
-
-Select "Finish" and press Enter, your Raspberry will reboot.  
+The installer will prepare some things, then ask you to change your password. After that, your Raspberry will reboot.  
 Wait for a minute, log into your Raspberry again, then run this command:
 
 ```
