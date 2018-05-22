@@ -40,8 +40,6 @@ sudo apt-get install tor -y
 sleep 3
 sudo apt-get install git -y
 sleep 3
-sudo apt install golang -y
-sleep 3
 sudo apt install unzip -y
 sleep 3
 sudo wget --directory-prefix=/etc/fail2ban/ https://raw.githubusercontent.com/whywefight/Bulwark-MN-Install/master/jail.local
@@ -255,12 +253,15 @@ echo "Important Other Infos:"
 echo ""
 echo "Bulwark bin dir: /home/bulwark/bulwark"
 echo "bulwark.conf: /home/bulwark/.bulwark/bulwark.conf"
+echo ""
 echo "Start daemon: sudo systemctl start bulwarkd.service"
 echo "Restart daemon: sudo systemctl restart bulwarkd.service"
 echo "Status of daemon: sudo systemctl status bulwarkd.service"
 echo "Stop daemon: sudo systemctl stop bulwarkd.service"
 echo "Check bulwarkd status: bulwark-cli getinfo"
 echo "Check masternode status: bulwark-cli masternode status"
+echo ""
+echo "BWK-DASH address: http://" `echo $SSH_CONNECTION | awk '{print $3}'`":8080"
 sleep 5
 echo ""
 echo "Adding bulwark-cli shortcut to ~/.profile"
