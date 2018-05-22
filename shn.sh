@@ -12,7 +12,7 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-sudo echo "Preparing installation..."
+echo "Preparing installation..."
 if ifconfig | grep wlan0 | grep RUNNING; then
   PSK=`sudo cat /etc/wpa_supplicant/wpa_supplicant.conf | grep -o -o 'psk=".*"' | cut -c 5- | sed 's/"//g'`
   SSID=`sudo cat /etc/wpa_supplicant/wpa_supplicant.conf | grep -o -o 'ssid=".*"' | cut -c 6- | sed 's/"//g'`
@@ -73,21 +73,6 @@ RestartSec=30
 WantedBy=multi-user.target
 EOL
 sleep 1
-#Golang Installation
-sudo wget https://storage.googleapis.com/golang/go1.9.linux-armv6l.tar.gz
-sudo tar -C /usr/local -xzf go1.9.linux-armv6l.tar.gz
-sudo rm go1.9.linux-armv6l.tar.gz
-sudo mkdir -p /home/bulwark/go/bin
-sudo chown -R bulwark:bulwark /home/bulwark/go
-sleep 1
-# put into global /etc/profile
-export PATH=$PATH:/usr/local/go/bin
-sudo su -c "echo 'PATH=/usr/local/go/bin:$PATH' >> /etc/profile"
-source /etc/profile
-sleep 1
-# put into user's ~/.profile
-export GOPATH=/home/bulwark/go
-export PATH=$PATH:$GOPATH/bin
 echo "" >> /home/bulwark/.profile
 echo "# Bulwark settings" >> /home/bulwark/.profile
 sudo sh -c "echo 'GOPATH=/home/bulwark/go' >> /home/bulwark/.profile"
@@ -149,8 +134,72 @@ sudo touch /etc/cron.d/torcheck
 sudo sh -c 'echo "*/5 * * * * root /etc/init.d/tor start > /dev/null 2>&1" >> /etc/cron.d/torcheck' ### CHECK ME or USE CRONTAB -e
 sudo rm -R /var/lib/tor/hidden_service
 sudo /etc/init.d/tor start
-sudo echo "Tor installed, configured and restarted"
+echo "Tor installed, configured and restarted"
 sleep 5
+
+echo "Installing BWK-DASH"
+#BWK-Dash Setup - START
+# Setup systemd service and start.
+sudo cat > /etc/systemd/system/bwk-dash.service << EOL
+[Unit]
+Description=Bulwark Home Node Dashboard
+After=network.target
+[Service]
+User=bulwark
+Group=bulwark
+WorkingDirectory=/home/bulwark/dash
+ExecStart=/usr/local/bin/bwk-dash
+Restart=always
+TimeoutSec=10
+RestartSec=35
+[Install]
+WantedBy=multi-user.target
+EOL
+sleep 1
+# Install golang.
+sudo wget https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.10.2.linux-amd64.tar.gz
+sudo rm go1.10.2.linux-amd64.tar.gz
+# Configure golang.
+sudo echo "PATH=/usr/local/go/bin:$PATH" >> /etc/profile
+source /etc/profile
+mkdir -p /home/bulwark/go/src
+echo "GOPATH=$HOME/go" >> /home/bulwark/.profile
+source /home/bulwark/.profile
+# Build the dashboard binaries.
+go get github.com/dustinengle/bwk-dash
+go build -o bwk-cron $GOPATH/src/github.com/dustinengle/bwk-dash/cmd/bwk-cron/*.go
+go build -o bwk-dash $GOPATH/src/github.com/dustinengle/bwk-dash/cmd/bwk-dash/*.go
+sudo mv bwk-cron /usr/local/bin/bwk-cron
+sudo mv bwk-dash /usr/local/bin/bwk-dash
+# Copy the html files to the dash folder and create.
+mkdir -p /home/bulwark/dash
+cp -R $GOPATH/src/github.com/dustinengle/bwk-dash/client/build/* /home/bulwark/dash/
+# Create .env file for dashboard api and cron.
+cat > /home/bulwark/dash/.env << EOL
+DASH_DONATION_ADDRESS=TESTADDRESSHERE
+DASH_PORT=8080
+DASH_RPC_ADDR=localhost
+DASH_RPC_PORT=52541
+DASH_RPC_USER=${RPCUSER}
+DASH_RPC_PASS=${RPCPASSWORD}
+DASH_WEBSITE=/home/bulwark/dash
+DASH_DB=/home/bulwark/dash/bwk-dash.db
+EOL
+sleep 1
+# Cleanup/enforce ownership.
+sudo chown -R bulwark:bulwark /home/bulwark/dash
+# Setup cron job for bwk-cron.
+sudo crontab -u bulwark -l > mycron
+echo '* * * * * cd /home/bulwark/dash && /usr/local/bin/bwk-cron' >> mycron
+sudo crontab -u bulwark mycron
+sleep 1
+sudo rm -f mycron
+# Enable dashboard service.
+sudo systemctl enable bwk-dash
+#BWK-Dash Setup - END
+sleep 1
+
 cd ~
 sudo mv /home/pi/bulwark /home/bulwark/
 sudo chown -R bulwark:bulwark /home/bulwark/bulwark/
@@ -158,7 +207,7 @@ sleep 1
 sudo systemctl enable bulwarkd.service
 sleep 1
 sudo systemctl start bulwarkd.service
-sudo echo "Starting up bulwarkd, please wait"
+echo "Starting up bulwarkd, please wait"
 
 # Wait for bulwark to finish starting to prevent errors in line 158
 until sudo su -c "bulwark-cli getinfo 2>/dev/null | grep 'balance' > /dev/null" bulwark; do
@@ -171,52 +220,52 @@ done
 sudo su -c 'echo "masternodeprivkey=`sudo su -c "bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf masternode genkey" bulwark`" >> /home/bulwark/.bulwark/bulwark.conf'
 sudo su -c 'echo "masternode=1" >> /home/bulwark/.bulwark/bulwark.conf'
 sudo echo "externalip=`sudo cat /var/lib/tor/hidden_service/hostname`" >> /home/bulwark/.bulwark/bulwark.conf
-sudo echo ""
-sudo echo "I will open the getinfo screen for you in watch mode now, close it with CTRL + C once we are fully synced."
+echo ""
+echo "I will open the getinfo screen for you in watch mode now, close it with CTRL + C once we are fully synced."
 sleep 20
 watch bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf getinfo
-sudo echo "Daemon Status:"
+echo "Daemon Status:"
 sudo systemctl status bulwarkd.service | sed -n -e 's/^.*Active: //p'
-sudo echo ""
-sudo echo "Tor Status:"
+echo ""
+echo "Tor Status:"
 curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations | xargs
-sudo echo ""
-sudo echo "Show Onion Address:"
+echo ""
+echo "Show Onion Address:"
 sudo cat /var/lib/tor/hidden_service/hostname
-sudo echo ""
-sudo echo "Show Active Peers:"
+echo ""
+echo "Show Active Peers:"
 bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf getpeerinfo | sed -n -e 's/^.*"addr" : //p'
-sudo echo ""
-sudo echo "Firewall Rules:"
+echo ""
+echo "Firewall Rules:"
 sudo ufw status
-sudo echo ""
-sudo echo "Fail2Ban:"
+echo ""
+echo "Fail2Ban:"
 sudo systemctl status fail2ban.service | sed -n -e 's/^.*Active: //p'
-sudo echo ""
-sudo echo "Unattended Updates:"
+echo ""
+echo "Unattended Updates:"
 cat /etc/apt/apt.conf.d/20auto-upgrades
-sudo echo ""
-sudo echo "Wifi Password hashed:"
+echo ""
+echo "Wifi Password hashed:"
 sudo cat /etc/wpa_supplicant/wpa_supplicant.conf | grep 'psk='
-sudo echo ""
-sudo echo "Local Wallet masternode.conf file:"
-sudo echo TORNODE $(sudo cat /var/lib/tor/hidden_service/hostname):52543 $(sudo grep -Po '(?<=masternodeprivkey=).*' /home/bulwark/.bulwark/bulwark.conf) $(echo "YOURTXINHERE")
-sudo echo ""
-sudo echo "Important Other Infos:"
-sudo echo ""
-sudo echo "Bulwark bin dir: /home/bulwark/bulwark"
-sudo echo "bulwark.conf: /home/bulwark/.bulwark/bulwark.conf"
-sudo echo "Start daemon: sudo systemctl start bulwarkd.service"
-sudo echo "Restart daemon: sudo systemctl restart bulwarkd.service"
-sudo echo "Status of daemon: sudo systemctl status bulwarkd.service"
-sudo echo "Stop daemon: sudo systemctl stop bulwarkd.service"
-sudo echo "Check bulwarkd status: bulwark-cli getinfo"
-sudo echo "Check masternode status: bulwark-cli masternode status"
+echo ""
+echo "Local Wallet masternode.conf file:"
+echo TORNODE $(sudo cat /var/lib/tor/hidden_service/hostname):52543 $(sudo grep -Po '(?<=masternodeprivkey=).*' /home/bulwark/.bulwark/bulwark.conf) $(echo "YOURTXINHERE")
+echo ""
+echo "Important Other Infos:"
+echo ""
+echo "Bulwark bin dir: /home/bulwark/bulwark"
+echo "bulwark.conf: /home/bulwark/.bulwark/bulwark.conf"
+echo "Start daemon: sudo systemctl start bulwarkd.service"
+echo "Restart daemon: sudo systemctl restart bulwarkd.service"
+echo "Status of daemon: sudo systemctl status bulwarkd.service"
+echo "Stop daemon: sudo systemctl stop bulwarkd.service"
+echo "Check bulwarkd status: bulwark-cli getinfo"
+echo "Check masternode status: bulwark-cli masternode status"
 sleep 5
-sudo echo ""
-sudo echo "Adding bulwark-cli shortcut to ~/.profile"
+echo ""
+echo "Adding bulwark-cli shortcut to ~/.profile"
 echo "alias bulwark-cli='sudo bulwark-cli -config=/home/bulwark/.bulwark/bulwark.conf -datadir=/home/bulwark/.bulwark'" >> /home/pi/.profile
-sudo echo "Installation finished."
+echo "Installation finished."
 read -p "Press Enter to continue, the system will reboot."
 sudo rm -rf shn.sh
 sudo reboot
