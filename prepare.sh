@@ -17,25 +17,25 @@ echo "Downloading SHN installer..."
 sleep 1
 sudo wget https://raw.githubusercontent.com/kewagi/bwk/master/shn.sh
 sudo chmod 777 shn.sh
-
+echo "Expanding filesystem..."
+sudo raspi-config nonint do_expand_rootfs
+sleep 1
+echo "Setting GPU memory..."
+sudo raspi-config nonint do_memory_split 16
 clear
 
 cat << EOL
 
-We will now start raspi-config. Please change the following settings:
-
-* Change your password              1 Change User Password
-* Expand your filesystem            7 Advanced Options -> A1 Expand Filesystem
-* Optional: Set GPU Memory to 16MB  7 Advanced Options -> A3 Memory Split
-
-Then select "Finish"
+In the next step, you will be asked to enter a new password and confirm it.
+The password you type in will not be shown on screen, this is normal.
 
 EOL
-read -p "Press Enter to continue."
 
-echo "Starting raspi-config..."
-sleep 1
-sudo raspi-config
+sudo passwd pi
+
+clear
+
+echo "Rebooting..."
 
 sleep 1
 sudo reboot
