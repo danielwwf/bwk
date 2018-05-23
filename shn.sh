@@ -184,7 +184,7 @@ sudo tar -zxf $DASH_HTML_TAR -C /home/bulwark/dash
 rm -f $DASH_HTML_TAR
 # Create .env file for dashboard api and cron.
 cat > /home/bulwark/dash/.env << EOL
-DASH_DONATION_ADDRESS=TESTADDRESSHERE
+DASH_DONATION_ADDRESS=bRc4WCeyYvzcLSkMrAanM83Nc885JyQTMY
 DASH_PORT=${DASH_PORT}
 DASH_RPC_ADDR=localhost
 DASH_RPC_PORT=52541
