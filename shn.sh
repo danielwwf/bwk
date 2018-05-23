@@ -288,7 +288,7 @@ echo "Stop daemon: sudo systemctl stop bulwarkd.service"
 echo "Check bulwarkd status: bulwark-cli getinfo"
 echo "Check masternode status: bulwark-cli masternode status"
 echo ""
-echo "BWK-Dash address: http://`ifconfig | grep "inet " | grep -v -m1 "127.0.0.1" | awk '{print $2}'`:8080"
+echo "BWK-Dash address: http://`ifconfig | grep "inet " | grep -v -m1 "127.0.0.1" | awk '{print $2}'`"
 sleep 5
 echo ""
 echo "Adding bulwark-cli shortcut to ~/.profile"
