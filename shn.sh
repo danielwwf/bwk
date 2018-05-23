@@ -87,7 +87,7 @@ sudo chown -R bulwark:bulwark /home/bulwark/.bulwark
 RPCUSER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 RPCPASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 sudo cat > /home/bulwark/.bulwark/bulwark.conf << EOL
-rpcusername=${RPCUSER}
+rpcuser=${RPCUSER}
 rpcpassword=${RPCPASSWORD}
 daemon=1
 EOL
@@ -95,9 +95,21 @@ sudo ufw allow 9050
 sleep 2
 sudo ufw allow 52543
 sleep 2
+sudo ufw allow http
+sleep 2
 sudo ufw allow from 127.0.0.1 to 127.0.0.1 port 52541
 sleep 2
 sudo ufw allow from `ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/' | awk -F"." '{print $1"."$2"."$3".0/24"}'` to any port 22
+sleep 2
+
+sudo tee -a /etc/ufw/before.temp << EOL
+
+*nat
+:PREROUTING ACCEPT [0:0]
+-A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+COMMIT
+EOL
+
 yes | sudo ufw enable
 sleep 2
 sudo wget $TARBALLURL
