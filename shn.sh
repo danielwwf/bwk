@@ -102,7 +102,7 @@ sleep 2
 sudo ufw allow from `ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/' | awk -F"." '{print $1"."$2"."$3".0/24"}'` to any port 22
 sleep 2
 
-sudo tee -a /etc/ufw/before.temp << EOL
+sudo tee -a /etc/ufw/before.rules << EOL
 
 *nat
 :PREROUTING ACCEPT [0:0]
