@@ -95,6 +95,8 @@ sudo ufw allow 9050
 sleep 2
 sudo ufw allow 52543
 sleep 2
+sudo ufw allow 8080
+sleep 2
 sudo ufw allow http
 sleep 2
 sudo ufw allow from 127.0.0.1 to 127.0.0.1 port 52541
