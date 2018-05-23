@@ -95,7 +95,7 @@ sudo ufw allow 9050
 sleep 2
 sudo ufw allow 52543
 sleep 2
-sudo ufw allow 8080
+sudo ufw allow 8080/tcp
 sleep 2
 sudo ufw allow http
 sleep 2
