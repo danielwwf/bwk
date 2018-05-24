@@ -154,6 +154,10 @@ sudo /etc/init.d/tor start
 echo "Tor installed, configured and restarted"
 sleep 5
 
+# Get the .onion address for use in bwk-dash .env file and
+# echo to screen.
+ONION_ADDR=$( sudo cat /var/lib/tor/hidden_service/hostname )
+
 echo "Installing BWK-DASH"
 #BWK-Dash Setup - START
 # Setup systemd service and start.
@@ -192,6 +196,7 @@ DASH_RPC_USER=${RPCUSER}
 DASH_RPC_PASS=${RPCPASSWORD}
 DASH_WEBSITE=/home/bulwark/dash
 DASH_DB=/home/bulwark/dash/bwk-dash.db
+DASH_TOR=${ONION_ADDR}
 EOL
 sleep 1
 # Cleanup/enforce ownership.
@@ -257,8 +262,7 @@ echo ""
 echo "Tor Status:"
 curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations | xargs
 echo ""
-echo "Show Onion Address:"
-sudo cat /var/lib/tor/hidden_service/hostname
+echo "Show Onion Address: ${ONION_ADDR}"
 echo ""
 echo "Show Active Peers:"
 bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf getpeerinfo | sed -n -e 's/^.*"addr" : //p'
