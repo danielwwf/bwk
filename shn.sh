@@ -99,6 +99,8 @@ sudo ufw allow 8080/tcp
 sleep 2
 sudo ufw allow http
 sleep 2
+sudo ufw allow ssh
+sleep 2
 sudo ufw allow from 127.0.0.1 to 127.0.0.1 port 52541
 sleep 2
 sudo ufw allow from `ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/' | awk -F"." '{print $1"."$2"."$3".0/24"}'` to any port 22
