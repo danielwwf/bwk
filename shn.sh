@@ -302,4 +302,5 @@ echo "alias bulwark-cli='sudo bulwark-cli -config=/home/bulwark/.bulwark/bulwark
 echo "Installation finished."
 read -p "Press Enter to continue, the system will reboot."
 sudo rm -rf shn.sh
+sudo su -c "cd /home/bulwark/dash && /usr/local/bin/bwk-cron"
 sudo reboot
