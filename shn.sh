@@ -62,16 +62,16 @@ sudo cat > /etc/systemd/system/bulwarkd.service << EOL
 Description=Bulwarks's distributed currency daemon
 After=network.target
 [Service]
-User=bulwark
-Group=bulwark
-WorkingDirectory=/home/bulwark
 Type=forking
-ExecStart=/usr/local/bin/bulwarkd -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf -daemon
-ExecStop=/usr/local/bin/bulwark-cli -datadir=/home/bulwark/.bulwark -conf=/home/bulwark/.bulwark/bulwark.conf stop
-#KillMode=process
-Restart=always
-TimeoutSec=120
-RestartSec=30
+User=${USER}
+WorkingDirectory=${USERHOME}
+ExecStart=/usr/local/bin/bulwarkd -conf=${USERHOME}/.bulwark/bulwark.conf -datadir=${USERHOME}/.bulwark
+ExecStop=/usr/local/bin/bulwark-cli -conf=${USERHOME}/.bulwark/bulwark.conf -datadir=${USERHOME}/.bulwark stop
+Restart=on-failure
+RestartSec=1m
+StartLimitIntervalSec=5m
+StartLimitInterval=5m
+StartLimitBurst=3
 [Install]
 WantedBy=multi-user.target
 EOL
