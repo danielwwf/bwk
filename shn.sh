@@ -305,4 +305,5 @@ echo "Installation finished."
 read -p "Press Enter to continue, the system will reboot."
 sudo rm -rf shn.sh
 sudo su -c "cd /home/bulwark/dash && /usr/local/bin/bwk-cron"
+sudo chown -R bulwark:bulwark /home/bulwark/dash
 sudo reboot
