@@ -63,10 +63,10 @@ Description=Bulwarks's distributed currency daemon
 After=network.target
 [Service]
 Type=forking
-User=${USER}
-WorkingDirectory=${USERHOME}
-ExecStart=/usr/local/bin/bulwarkd -conf=${USERHOME}/.bulwark/bulwark.conf -datadir=${USERHOME}/.bulwark
-ExecStop=/usr/local/bin/bulwark-cli -conf=${USERHOME}/.bulwark/bulwark.conf -datadir=${USERHOME}/.bulwark stop
+User=bulwark
+WorkingDirectory=/home/bulwark
+ExecStart=/usr/local/bin/bulwarkd -conf=/home/bulwark/.bulwark/bulwark.conf -datadir=/home/bulwark/.bulwark
+ExecStop=/usr/local/bin/bulwark-cli -conf=/home/bulwark/.bulwark/bulwark.conf -datadir=/home/bulwark/.bulwark stop
 Restart=on-failure
 RestartSec=1m
 StartLimitIntervalSec=5m

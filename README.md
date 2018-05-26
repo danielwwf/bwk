@@ -76,10 +76,10 @@ Now you're ready to install! Using [Putty](https://www.putty.org/) or a terminal
 Once you are logged in, run this line:
 
 ```
-bash <( wget -qO - https://raw.githubusercontent.com/kewagi/bwk/master/prepare.sh )
+bash <( wget -qO - https://raw.githubusercontent.com/bulwark-crypto/shn/master/prepare.sh )
 ```
 
-The installer will prepare some things, then ask you to change your password. After that, your Raspberry will reboot.  
+The installer will prepare some things, then ask you to change your password. After that, your Raspberry will reboot.
 Wait for a minute, log into your Raspberry again, then run this command:
 
 ```
@@ -101,6 +101,6 @@ While the Raspberry Pi is rebooting, add the line you got from the script to _ma
 startmasternode alias false <mymnalias>
 ```
 
-where <mymnalias> is the name of your masternode, TORNODE by default.
+where _<mymnalias\>_ is the name of your masternode, TORNODE by default.
 
 Congratulations, you're done!
