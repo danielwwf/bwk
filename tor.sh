@@ -34,7 +34,7 @@ sudo apt-get install git -y
 sleep 3
 sudo apt install golang -y
 sleep 3
-sudo wget --directory-prefix=/etc/fail2ban/ https://raw.githubusercontent.com/whywefight/Bulwark-MN-Install/master/jail.local
+sudo wget --directory-prefix=/etc/fail2ban/ https://raw.githubusercontent.com/kewagi/shn/master/jail.local
 sudo apt install unattended-upgrades -y
 sleep 3
 sudo sh -c 'echo "Unattended-Upgrade::Allowed-Origins {" >> /etc/apt/apt.conf.d/50unattended-upgrades'
