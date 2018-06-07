@@ -1,7 +1,7 @@
 #!/bin/#!/usr/bin/env bash
 clear
 
-echo "Upating system..."
+echo "Updating system..."
 sleep 1
 sudo apt-get update -y
 sleep 1
