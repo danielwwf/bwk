@@ -116,6 +116,13 @@ EOL
 
 yes | sudo ufw enable
 sleep 2
+
+# Add Fail2Ban memory hack if needed
+if ! grep -q "ulimit -s 256" /etc/default/fail2ban; then
+  echo "ulimit -s 256" | sudo tee -a /etc/default/fail2ban
+  sudo systemctl restart fail2ban
+fi
+
 sudo wget $TARBALLURL
 sleep 2
 sudo tar -xzf $TARBALLNAME
