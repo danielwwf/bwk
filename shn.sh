@@ -1,11 +1,11 @@
 #!/bin/bash
 
 CHARS="/-\|"
-TARBALLURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bulwark-1.2.4.0-ARMx64.tar.gz"
-TARBALLNAME="bulwark-1.2.4.0-ARMx64.tar.gz"
-BOOTSTRAPURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bootstrap.dat.zip"
+TARBALLURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.3.0/bulwark-1.3.0.0-ARMx64.tar.gz"
+TARBALLNAME="bulwark-1.3.0.0-ARMx64.tar.gz"
+BWKVERSION="1.3.0.0"
+BOOTSTRAPURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.3.0/bootstrap.dat.zip"
 BOOTSTRAPARCHIVE="bootstrap.dat.zip"
-BWKVERSION="1.2.4.0"
 # BWK-Dash variables.
 DASH_BIN_TAR="bwk-dash-1.0.0-linux-arm.tar.gz"
 DASH_HTML_TAR="bwk-dash-1.0.0-html.tar.gz"
