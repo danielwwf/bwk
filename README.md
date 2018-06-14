@@ -12,6 +12,7 @@
   * [macOS](#macos)
   * [Linux](#linux)
 - [Installation](#installation)
+- [Updates](#updates)
 
 ## Requirements
 To connect your node, you need either a network router with a free RJ-45 port and an ethernet cable or a router running a 2.4Ghz Wi-fi network. If you want to connect via Wi-fi, you will also need either a monitor that supports HDMI (along with a HDMI cable) and a keyboard, or a microSD card reader that works with your computer.
@@ -104,3 +105,10 @@ startmasternode alias false <mymnalias>
 where _<mymnalias\>_ is the name of your masternode, TORNODE by default.
 
 Congratulations, you're done!
+
+## Updates
+To update your Homenode to the newest version of the Bulwark Protocol simply paste the following line in your terminal:
+```
+bash <( curl https://raw.githubusercontent.com/bulwark-crypto/shn/master/update.sh )
+```
+
