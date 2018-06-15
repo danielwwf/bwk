@@ -3,7 +3,7 @@
 ## Table of contents
 - [Requirements](#requirements)
 - [Funding your Masternode](#funding-your-masternode)
-- [Generating your Masternode Private Key and Output](#generating-your-masternode-private-key-and-output)
+- [Generating your Masternode Output](#generating-your-masternode-output)
 - [Connecting your SHN to your network](#connecting-your-shn-to-your-network)
   * [Connecting via ethernet](#connecting-via-ethernet)
   * [Connecting via Wi-fi](#connecting-via-wi-fi)
@@ -35,17 +35,7 @@ To connect your node, you need either a network router with a free RJ-45 port an
 
 As soon as all 5k transactions are done, we will wait for 15 confirmations. You can check this in your wallet or use the explorer. It should take around 30 minutes if all transaction have 15 confirmations
 
-## Generating your Masternode Private Key and Output
-
-Generate your Masternode Private Key
-
-In your wallet, open Tools -> Debug console and run the following command to get your masternode key:
-
-```bash
-masternode genkey
-```
-
-Please note: If you plan to set up more than one masternode, you need to create a key with the above command for each one. These keys are not tied to any specific masternode, but each masternode you run requires a unique key.
+## Generating your Masternode Output
 
 Run this command to get your output information:
 
@@ -53,13 +43,7 @@ Run this command to get your output information:
 masternode outputs
 ```
 
-Copy both the key and output information to a text file.
-
-Close your wallet and open the Bulwark Appdata folder. Its location depends on your OS.
-
-* **Windows:** Press Windows+R and write %appdata% - there, open the folder Bulwark.
-* **macOS:** Press Command+Space to open Spotlight, write ~/Library/Application Support/Bulwark and press Enter.
-* **Linux:** Open ~/.bulwark/
+Copy both the transaction id and output id to a text file.
 
 ## Connecting your SHN to your network
 To connect your home node, you have two options: ethernet and Wi-fi.
@@ -137,8 +121,9 @@ Now the Secure Home Node will be installed. After a while, you will see the foll
 I will open the getinfo screen for you in watch mode now, close it with CTRL + C once we are fully synced.
 ```
 
-Then you will see the status of bulwarkd syncing. Once the sync is complete (when the number of blocks displayed is up to the current block height), press `Ctrl+c`
-to finish the installation. You will be shown some information, among that the configuration line you need to add your your _masternode.conf_ on your local wallet. Press Enter to restart one more time.
+Then you will see the status of bulwarkd syncing. Once the sync is complete (when the number of blocks displayed is up to the current block height), press `Ctrl+c` to finish the installation. You will be shown some information, among that the configuration line you need to add your your _masternode.conf_ on your local wallet. In this configuration lined, replace YOURTXINHERE with the transaction id and output id you got earlier.
+
+Press Enter to restart one more time.
 
 While the Raspberry Pi is rebooting, add the line you got from the script to _masternode.conf_, restart your wallet, open the debug console and start your masternode with the command
 
@@ -155,4 +140,3 @@ To update your Homenode to the newest version of the Bulwark Protocol simply pas
 ```
 bash <( curl https://raw.githubusercontent.com/bulwark-crypto/shn/master/update.sh )
 ```
-
