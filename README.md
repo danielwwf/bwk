@@ -2,8 +2,6 @@
 
 ## Table of contents
 - [Requirements](#requirements)
-- [Funding your Masternode](#funding-your-masternode)
-- [Generating your Masternode Output](#generating-your-masternode-output)
 - [Connecting your SHN to your network](#connecting-your-shn-to-your-network)
   * [Connecting via ethernet](#connecting-via-ethernet)
   * [Connecting via Wi-fi](#connecting-via-wi-fi)
