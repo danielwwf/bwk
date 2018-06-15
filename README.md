@@ -3,6 +3,7 @@
 ## Table of contents
 - [Requirements](#requirements)
 - [Funding your Masternode](#funding-your-masternode)
+- [Generating your Masternode Private Key and Output](generating-your-Masternode-Private-Key-and-Output)
 - [Connecting your SHN to your network](#connecting-your-shn-to-your-network)
   * [Connecting via ethernet](#connecting-via-ethernet)
   * [Connecting via Wi-fi](#connecting-via-wi-fi)
@@ -33,6 +34,32 @@ To connect your node, you need either a network router with a free RJ-45 port an
   - Once all addresses are created send 5000 BWK each to them. Ensure that you send exactly 5000 BWK and do it in a single transaction. You can double check where the coins are coming from by checking it via coin control usually, that's not an issue.
 
 As soon as all 5k transactions are done, we will wait for 15 confirmations. You can check this in your wallet or use the explorer. It should take around 30 minutes if all transaction have 15 confirmations
+
+## Generating your Masternode Private Key and Output
+
+Generate your Masternode Private Key
+
+In your wallet, open Tools -> Debug console and run the following command to get your masternode key:
+
+```bash
+masternode genkey
+```
+
+Please note: If you plan to set up more than one masternode, you need to create a key with the above command for each one. These keys are not tied to any specific masternode, but each masternode you run requires a unique key.
+
+Run this command to get your output information:
+
+```bash
+masternode outputs
+```
+
+Copy both the key and output information to a text file.
+
+Close your wallet and open the Bulwark Appdata folder. Its location depends on your OS.
+
+* **Windows:** Press Windows+R and write %appdata% - there, open the folder Bulwark.
+* **macOS:** Press Command+Space to open Spotlight, write ~/Library/Application Support/Bulwark and press Enter.
+* **Linux:** Open ~/.bulwark/
 
 ## Connecting your SHN to your network
 To connect your home node, you have two options: ethernet and Wi-fi.
