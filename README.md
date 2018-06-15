@@ -3,7 +3,7 @@
 ## Table of contents
 - [Requirements](#requirements)
 - [Funding your Masternode](#funding-your-masternode)
-- [Generating your Masternode Private Key and Output](#generating-your-masternode-private-Key-and-output)
+- [Generating your Masternode Private Key and Output](#generating-your-masternode-private-key-and-output)
 - [Connecting your SHN to your network](#connecting-your-shn-to-your-network)
   * [Connecting via ethernet](#connecting-via-ethernet)
   * [Connecting via Wi-fi](#connecting-via-wi-fi)
