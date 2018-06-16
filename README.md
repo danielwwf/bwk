@@ -2,6 +2,7 @@
 
 ## Table of contents
 - [Requirements](#requirements)
+- [Generating your Masternode Output](#generating-your-masternode-output)
 - [Connecting your SHN to your network](#connecting-your-shn-to-your-network)
   * [Connecting via ethernet](#connecting-via-ethernet)
   * [Connecting via Wi-fi](#connecting-via-wi-fi)
@@ -16,6 +17,17 @@
 
 ## Requirements
 To connect your node, you need either a network router with a free RJ-45 port and an ethernet cable or a router running a 2.4Ghz Wi-fi network. If you want to connect via Wi-fi, you will also need either a monitor that supports HDMI (along with a HDMI cable) and a keyboard, or a microSD card reader that works with your computer.
+
+-## Generating your Masternode Output	
+-	
+-Run this command to get your output information:	
+-	
+-```bash	
+-masternode outputs	
+-```	
+-	
+-Copy both the transaction id and output id to a text file.	
+-
 
 ## Connecting your SHN to your network
 To connect your home node, you have two options: ethernet and Wi-fi.
