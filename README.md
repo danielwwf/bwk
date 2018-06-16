@@ -20,14 +20,13 @@ To connect your node, you need either a network router with a free RJ-45 port an
 
 -## Generating your Masternode Output	
 -	
--Run this command to get your output information:	
--	
--```bash	
--masternode outputs	
--```	
--	
+Run this command to get your output information:	
+
+```bash	
+masternode outputs	
+```	
+	
 -Copy both the transaction id and output id to a text file.	
--
 
 ## Connecting your SHN to your network
 To connect your home node, you have two options: ethernet and Wi-fi.
