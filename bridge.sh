@@ -98,9 +98,9 @@ sleep 2
 sudo ufw allow 22
 yes | sudo ufw enable
 sleep 2
-sudo wget https://github.com/bulwark-crypto/Bulwark/releases/download/1.2.4/bulwark-1.2.4.0-linux64.tar.gz
+sudo wget https://github.com/bulwark-crypto/Bulwark/releases/download/1.3.0/bulwark-1.3.0.0-linux64.tar.gz
 sleep 2
-sudo tar -xzf bulwark-1.2.4.0-linux64.tar.gz
+sudo tar -xzf bulwark-1.3.0.0-linux64.tar.gz
 sudo mv bin bulwark
 cd bulwark
 sudo cp bulwark* /usr/bin
