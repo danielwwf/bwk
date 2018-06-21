@@ -4,8 +4,8 @@ CHARS="/-\|"
 TARBALLURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.3.0/bulwark-1.3.0.0-ARMx64.tar.gz"
 TARBALLNAME="bulwark-1.3.0.0-ARMx64.tar.gz"
 BWKVERSION="1.3.0.0"
-BOOTSTRAPURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.3.0/bootstrap.dat.zip"
-BOOTSTRAPARCHIVE="bootstrap.dat.zip"
+BOOTSTRAPURL="https://github.com/bulwark-crypto/Bulwark/releases/download/1.3.0/bootstrap.dat.xz"
+BOOTSTRAPARCHIVE="bootstrap.dat.xz"
 # BWK-Dash variables.
 DASH_BIN_TAR="bwk-dash-1.0.0-linux-arm.tar.gz"
 DASH_HTML_TAR="bwk-dash-1.0.0-html.tar.gz"
@@ -45,7 +45,7 @@ sudo apt-get install tor -y
 sleep 3
 sudo apt-get install git -y
 sleep 3
-sudo apt install unzip -y
+sudo apt install xz-utils -y
 sleep 3
 sudo wget --directory-prefix=/etc/fail2ban/ https://raw.githubusercontent.com/bulwark-crypto/shn/master/jail.local
 sudo apt install unattended-upgrades -y
@@ -81,7 +81,7 @@ echo "# Bulwark settings" >> /home/bulwark/.profile
 sudo sh -c "echo 'GOPATH=/home/bulwark/go' >> /home/bulwark/.profile"
 sleep 1
 sudo mkdir /home/bulwark/.bulwark
-wget $BOOTSTRAPURL && unzip $BOOTSTRAPARCHIVE -d /home/bulwark/.bulwark/ && rm $BOOTSTRAPARCHIVE
+wget $BOOTSTRAPURL && xz -cd $BOOTSTRAPARCHIVE > /home/bulwark/.bulwark/bootstrap.dat && rm $BOOTSTRAPARCHIVE
 sudo touch /home/bulwark/.bulwark/bulwark.conf
 sudo chown -R bulwark:bulwark /home/bulwark/.bulwark
 RPCUSER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
