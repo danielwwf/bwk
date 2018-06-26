@@ -18,16 +18,16 @@ echo "Refreshing node, please wait."
 
 sleep 5
 
-rm -rf /home/bulwark/.bulwark/blocks
-rm -rf /home/bulwark/.bulwark/database
-rm -rf /home/bulwark/.bulwark/chainstate
-rm -rf /home/bulwark/.bulwark/peers.dat
+sudo rm -rf /home/bulwark/.bulwark/blocks
+sudo rm -rf /home/bulwark/.bulwark/database
+sudo rm -rf /home/bulwark/.bulwark/chainstate
+sudo rm -rf /home/bulwark/.bulwark/peers.dat
 
-cp /home/bulwark/.bulwark/bulwark.conf /home/bulwark/.bulwark/bulwark.conf.backup
-sed -i '/^addnode/d' /home/bulwark/.bulwark/bulwark.conf
+sudo cp /home/bulwark/.bulwark/bulwark.conf /home/bulwark/.bulwark/bulwark.conf.backup
+sudo sed -i '/^addnode/d' /home/bulwark/.bulwark/bulwark.conf
 
 echo "Installing bootstrap file..."
-wget $BOOTSTRAPURL && xz -cd $BOOTSTRAPARCHIVE > /home/bulwark/.bulwark/bootstrap.dat && rm $BOOTSTRAPARCHIVE
+wget $BOOTSTRAPURL && sudo xz -cd $BOOTSTRAPARCHIVE > /home/bulwark/.bulwark/bootstrap.dat && rm $BOOTSTRAPARCHIVE
 
 if [ -e /etc/systemd/system/bulwarkd.service ]; then
   sudo systemctl start bulwarkd
