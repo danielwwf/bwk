@@ -9,7 +9,7 @@ read -p "Press Ctrl-C to abort or any other key to continue. " -n1 -s
 clear
 
 if [ -e /etc/systemd/system/bulwarkd.service ]; then
-  systemctl stop bulwarkd
+  sudo systemctl stop bulwarkd
 else
   su -c "bulwark-cli stop" bulwark
 fi
