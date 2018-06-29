@@ -53,8 +53,8 @@ clear
 
 cat << EOL
 
-If your masternode appears MISSING in your wallet, you will have to restart it.
-Please open your wallet and enter the following line into the debug console:
+Now, you need to start your masternode. Please go to your desktop wallet and
+enter the following line into your debug console:
 
 startmasternode alias false <mymnalias>
 
