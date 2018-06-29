@@ -1,5 +1,11 @@
 #!/bin/bash
 
+sudo apt -qqy install curl
+clear
+
+TARBALLURL=`curl -s https://api.github.com/repos/bulwark-crypto/bulwark/releases/latest | grep browser_download_url | grep linux64 | cut -d '"' -f 4`
+TARBALLNAME=`curl -s https://api.github.com/repos/bulwark-crypto/bulwark/releases/latest | grep browser_download_url | grep linux64 | cut -d '"' -f 4 | cut -d "/" -f 9`
+
 if [ "$(id -u)" != "0" ]; then
     echo "Sorry, this script needs to be run as root. Do \"sudo bash run.sh\""
     exit 1
@@ -98,9 +104,9 @@ sleep 2
 sudo ufw allow 22
 yes | sudo ufw enable
 sleep 2
-sudo wget https://github.com/bulwark-crypto/Bulwark/releases/download/1.3.1/bulwark-1.3.1.0-linux64.tar.gz
+sudo wget $TARBALLURL
 sleep 2
-sudo tar -xzf bulwark-1.3.1.0-linux64.tar.gz
+sudo tar -xzf $TARBALLNAME
 sudo mv bin bulwark
 cd bulwark
 sudo cp bulwark* /usr/bin
