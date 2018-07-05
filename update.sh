@@ -53,12 +53,9 @@ clear
 
 cat << EOL
 
-Now, you need to start your masternode. Please go to your desktop wallet and
-enter the following line into your debug console:
-
-startmasternode alias false <mymnalias>
-
-where <mymnalias> is the name of your masternode alias (without brackets)
+Now, you need to start your masternode. If you haven't already, please add this
+node to your masternode.conf now, restart and unlock your desktop wallet, go to
+the Masternodes tab, select your new node and click "Start Alias."
 
 EOL
 
