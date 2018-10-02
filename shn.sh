@@ -127,7 +127,7 @@ fi
 
 sudo wget "$TARBALLURL"
 sleep 2
-sudo tar -xzf "$TARBALLNAME" --strip-components 1 -C /usr/local/bin
+sudo tar -xzf "$TARBALLNAME" -C /usr/local/bin
 sleep 2
 sudo rm "$TARBALLNAME"
 sleep 2
