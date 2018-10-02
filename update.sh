@@ -21,7 +21,7 @@ sudo systemctl stop bulwarkd
 echo "Installing Bulwark $BWKVERSION..."
 rm /usr/local/bin/bulwark*
 wget "$TARBALLURL"
-tar -xzvf "$TARBALLNAME" --strip-components 1 -C /usr/local/bin
+sudo tar -xzvf "$TARBALLNAME" -C /usr/local/bin
 rm "$TARBALLNAME"
 
 # Remove addnodes from bulwark.conf
